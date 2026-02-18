@@ -1,0 +1,155 @@
+{
+  "nav": { "how": "How it works", "features": "Features", "pricing": "Pricing", "cta": "Request access" },
+
+  "hero": {
+    "pill": "Built for gyms, studios & boxes",
+    "headline": "Increase Revenue. Reduce Churn.",
+    "description": "GymPulse is the operating system for growth-driven fitness businesses — combining sales automation, retention intelligence and performance metrics in one platform.",
+    "primaryCta": "Request early access",
+    "secondaryCta": "See how it works",
+    "cards": {
+      "speedTitle": "Speed",
+      "speedValue": "Instant follow-up",
+      "retentionTitle": "Retention",
+      "retentionValue": "Churn risk alerts",
+      "clarityTitle": "Clarity",
+      "clarityValue": "Score 0–100"
+    },
+    "mock": {
+      "period": "This week",
+      "score": "82",
+      "status": "Healthy, improving",
+      "delta": "+7 vs last week",
+      "stats": {
+        "revenue": "Revenue",
+        "revenueValue": "+12%",
+        "churn": "Churn",
+        "churnValue": "-18%",
+        "attendance": "Attendance",
+        "attendanceValue": "+9%"
+      },
+      "actionTitle": "Next best action",
+      "actionValue": "Reactivate 14 members inactive for 7+ days",
+      "impact": "Estimated impact: +R$ 2.340/month"
+    }
+  },
+
+  "problem": {
+    "kicker": "The silent killer",
+    "title": "Most gyms don’t lose members loudly.",
+    "subtitle": "They lose them quietly — because follow-up is inconsistent, churn risk is invisible, and decisions are made without clear performance signals.",
+    "calloutTitle": "Fitness businesses don’t fail from lack of passion.",
+    "calloutText": "They fail from lack of systems. GymPulse turns retention and growth into a repeatable process.",
+    "cards": {
+      "c1Title": "No predictable follow-up",
+      "c1Desc": "Leads go cold and trials don’t convert because contact isn’t immediate or consistent.",
+      "c2Title": "Churn happens quietly",
+      "c2Desc": "Members disengage weeks before canceling — but teams don’t see the signals early enough.",
+      "c3Title": "No clarity on what to fix",
+      "c3Desc": "Without a single performance view, priorities become guesswork and revenue leaks monthly."
+    }
+  },
+
+  "how": {
+    "kicker": "How GymPulse works",
+    "title": "A simple loop: measure → improve → grow.",
+    "subtitle": "Everything becomes clear when the system tells you what to do next.",
+    "steps": {
+      "s1Title": "Measure",
+      "s1Desc": "Centralize signals: leads, visits, churn risk, attendance and revenue trends.",
+      "s2Title": "Act",
+      "s2Desc": "Turn insights into actions: follow-ups, reactivation campaigns and tasks.",
+      "s3Title": "Improve",
+      "s3Desc": "Track impact weekly and raise your GymPulse Score™ over time."
+    },
+    "note": "GymPulse is built for clarity: one score, clear next actions, and measurable impact."
+  },
+
+  "score": {
+    "kicker": "GymPulse Score™",
+    "title": "Know your gym’s health in one number (0–100).",
+    "subtitle": "A proprietary metric that summarizes growth + retention signals into a single, actionable view.",
+    "bullets": {
+      "b1": "Spot churn risk early and act before cancellations happen.",
+      "b2": "Prioritize what moves revenue and retention — with measurable impact."
+    },
+    "metrics": {
+      "m1Label": "Score today",
+      "m1Value": "82",
+      "m1Hint": "Healthy and improving",
+      "m2Label": "Churn risk",
+      "m2Value": "Low",
+      "m2Hint": "Risk alerts when needed",
+      "m3Label": "Next action",
+      "m3Value": "14",
+      "m3Hint": "Members to reactivate"
+    }
+  },
+
+  "features": {
+    "kicker": "What you get",
+    "title": "Built to drive predictable growth.",
+    "subtitle": "Not a management system. A growth engine for fitness businesses.",
+    "cards": {
+      "c1Title": "Sales automation",
+      "c1Desc": "Instant follow-up, smart pipelines and consistent lead handling.",
+      "c2Title": "Retention intelligence",
+      "c2Desc": "Churn risk alerts, inactivity detection and reactivation workflows.",
+      "c3Title": "Performance metrics",
+      "c3Desc": "One place to track what matters: revenue, attendance and retention."
+    }
+  },
+
+  "builtFor": {
+    "title": "Built for different fitness models.",
+    "subtitle": "GymPulse adapts to your operation — from gyms to studios and combat sports.",
+    "items": {
+      "i1Title": "Gyms",
+      "i1Desc": "Membership growth + retention clarity",
+      "i2Title": "Studios",
+      "i2Desc": "Classes, attendance and reactivation",
+      "i3Title": "Boxes & martial arts",
+      "i3Desc": "Community retention + engagement signals"
+    }
+  },
+
+  "pricing": {
+    "title": "Simple pricing, built to scale.",
+    "subtitle": "Start small. Upgrade when you’re ready.",
+    "starter": {
+      "name": "Starter",
+      "price": "R$ 297",
+      "period": "/month",
+      "desc": "For small gyms getting organized.",
+      "f1": "Core metrics dashboard",
+      "f2": "Lead follow-up basics",
+      "f3": "Weekly score summary",
+      "cta": "Get started"
+    },
+    "pro": {
+      "badge": "Most popular",
+      "name": "Pro",
+      "price": "R$ 497",
+      "period": "/month",
+      "desc": "For growth-driven operations that want predictability.",
+      "f1": "Automation workflows",
+      "f2": "Churn risk alerts",
+      "f3": "Reactivation campaigns",
+      "f4": "Score + next best actions",
+      "cta": "Request access"
+    }
+  },
+
+  "cta": {
+    "title": "Ready to stop losing members silently?",
+    "subtitle": "Join early access and be among the first fitness businesses to run growth with a Score-driven system.",
+    "primary": "Request Early Access",
+    "secondary": "See Pricing",
+    "name": "Your name",
+    "email": "Email",
+    "submit": "Join waitlist",
+    "note": "No spam. Cancel anytime."
+  },
+
+  "footer": { "copy": "© 2026 GymPulse. All rights reserved.", "pricing": "Pricing", "how": "How it works", "cta": "Early access" }
+}

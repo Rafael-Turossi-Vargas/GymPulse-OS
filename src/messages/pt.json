@@ -1,0 +1,155 @@
+{
+  "nav": { "how": "Como funciona", "features": "Recursos", "pricing": "Preços", "cta": "Solicitar acesso" },
+
+  "hero": {
+    "pill": "Feito para academias, estúdios e boxes",
+    "headline": "Aumente o faturamento. Reduza cancelamentos.",
+    "description": "GymPulse é o sistema operacional para negócios fitness orientados a crescimento — unindo automação de vendas, inteligência de retenção e métricas de performance em uma só plataforma.",
+    "primaryCta": "Solicitar acesso antecipado",
+    "secondaryCta": "Ver como funciona",
+    "cards": {
+      "speedTitle": "Velocidade",
+      "speedValue": "Follow-up instantâneo",
+      "retentionTitle": "Retenção",
+      "retentionValue": "Alertas de risco",
+      "clarityTitle": "Clareza",
+      "clarityValue": "Score 0–100"
+    },
+    "mock": {
+      "period": "Esta semana",
+      "score": "82",
+      "status": "Saudável, melhorando",
+      "delta": "+7 vs semana passada",
+      "stats": {
+        "revenue": "Receita",
+        "revenueValue": "+12%",
+        "churn": "Churn",
+        "churnValue": "-18%",
+        "attendance": "Frequência",
+        "attendanceValue": "+9%"
+      },
+      "actionTitle": "Próxima melhor ação",
+      "actionValue": "Reativar 14 alunos inativos há 7+ dias",
+      "impact": "Impacto estimado: +R$ 2.340/mês"
+    }
+  },
+
+  "problem": {
+    "kicker": "O assassino silencioso",
+    "title": "A maioria das academias não perde alunos “fazendo barulho”.",
+    "subtitle": "Elas perdem em silêncio — porque o follow-up é inconsistente, o risco de churn é invisível e as decisões são tomadas sem sinais claros de performance.",
+    "calloutTitle": "Negócios fitness não falham por falta de paixão.",
+    "calloutText": "Falham por falta de sistemas. O GymPulse transforma retenção e crescimento em um processo repetível.",
+    "cards": {
+      "c1Title": "Sem follow-up previsível",
+      "c1Desc": "Leads esfriam e trials não convertem porque o contato não é imediato nem consistente.",
+      "c2Title": "Churn acontece em silêncio",
+      "c2Desc": "Alunos desengajam semanas antes de cancelar — mas o time não enxerga os sinais cedo.",
+      "c3Title": "Sem clareza do que corrigir",
+      "c3Desc": "Sem uma visão única de performance, as prioridades viram achismo e o faturamento vaza todo mês."
+    }
+  },
+
+  "how": {
+    "kicker": "Como o GymPulse funciona",
+    "title": "Um loop simples: medir → melhorar → crescer.",
+    "subtitle": "Tudo fica claro quando o sistema te mostra a próxima ação.",
+    "steps": {
+      "s1Title": "Medir",
+      "s1Desc": "Centralize sinais: leads, visitas, risco de churn, frequência e tendência de receita.",
+      "s2Title": "Agir",
+      "s2Desc": "Transforme insights em ações: follow-ups, reativação e tarefas para o time.",
+      "s3Title": "Melhorar",
+      "s3Desc": "Acompanhe impacto semanal e aumente seu GymPulse Score™ com o tempo."
+    },
+    "note": "GymPulse foi feito para clareza: um score, próximas ações e impacto mensurável."
+  },
+
+  "score": {
+    "kicker": "GymPulse Score™",
+    "title": "Saiba a saúde da academia em um número (0–100).",
+    "subtitle": "Uma métrica proprietária que resume sinais de crescimento + retenção em uma visão única e acionável.",
+    "bullets": {
+      "b1": "Enxergue o risco de churn cedo e aja antes do cancelamento.",
+      "b2": "Priorize o que move receita e retenção — com impacto mensurável."
+    },
+    "metrics": {
+      "m1Label": "Score hoje",
+      "m1Value": "82",
+      "m1Hint": "Saudável e melhorando",
+      "m2Label": "Risco de churn",
+      "m2Value": "Baixo",
+      "m2Hint": "Alertas quando necessário",
+      "m3Label": "Próxima ação",
+      "m3Value": "14",
+      "m3Hint": "Alunos para reativar"
+    }
+  },
+
+  "features": {
+    "kicker": "O que você recebe",
+    "title": "Feito para crescimento previsível.",
+    "subtitle": "Não é um sistema de gestão. É um motor de crescimento para negócios fitness.",
+    "cards": {
+      "c1Title": "Automação de vendas",
+      "c1Desc": "Follow-up instantâneo, pipeline inteligente e consistência no atendimento.",
+      "c2Title": "Inteligência de retenção",
+      "c2Desc": "Alertas de risco, detecção de inatividade e fluxos de reativação.",
+      "c3Title": "Métricas de performance",
+      "c3Desc": "Tudo em um lugar: receita, frequência e retenção."
+    }
+  },
+
+  "builtFor": {
+    "title": "Feito para diferentes modelos fitness.",
+    "subtitle": "GymPulse se adapta à sua operação — de academias a estúdios e lutas.",
+    "items": {
+      "i1Title": "Academias",
+      "i1Desc": "Crescimento e clareza de retenção",
+      "i2Title": "Estúdios",
+      "i2Desc": "Aulas, frequência e reativação",
+      "i3Title": "Boxes e artes marciais",
+      "i3Desc": "Retenção da comunidade e engajamento"
+    }
+  },
+
+  "pricing": {
+    "title": "Preço simples, pronto para escalar.",
+    "subtitle": "Comece pequeno. Evolua quando quiser.",
+    "starter": {
+      "name": "Starter",
+      "price": "R$ 297",
+      "period": "/mês",
+      "desc": "Para pequenas academias se organizarem.",
+      "f1": "Dashboard de métricas essenciais",
+      "f2": "Base de follow-up de leads",
+      "f3": "Resumo semanal do score",
+      "cta": "Começar"
+    },
+    "pro": {
+      "badge": "Mais escolhido",
+      "name": "Pro",
+      "price": "R$ 497",
+      "period": "/mês",
+      "desc": "Para operações que querem previsibilidade de crescimento.",
+      "f1": "Workflows de automação",
+      "f2": "Alertas de risco de churn",
+      "f3": "Campanhas de reativação",
+      "f4": "Score + próximas ações",
+      "cta": "Solicitar acesso"
+    }
+  },
+
+  "cta": {
+    "title": "Pronto para parar de perder alunos em silêncio?",
+    "subtitle": "Entre no acesso antecipado e seja um dos primeiros negócios fitness a crescer com um sistema guiado por Score.",
+    "primary": "Solicitar Acesso Antecipado",
+    "secondary": "Ver Preços",
+    "name": "Seu nome",
+    "email": "Email",
+    "submit": "Entrar na lista",
+    "note": "Sem spam. Você pode sair quando quiser."
+  },
+
+  "footer": { "copy": "© 2026 GymPulse. Todos os direitos reservados.", "pricing": "Preços", "how": "Como funciona", "cta": "Acesso antecipado" }
+}

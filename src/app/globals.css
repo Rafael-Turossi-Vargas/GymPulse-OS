@@ -1,0 +1,20 @@
+/* 
+ * GymPulse Landing — Global Styles
+ * Developed by Rafael Turossi
+ * Signature: @Rafael-Turossi-Vargas
+ * (c) 2026 Rafael Turossi. All rights reserved.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #0b0f14; /* ✅ fundo escuro */
+  color: white;       /* ✅ texto visível */
+}
