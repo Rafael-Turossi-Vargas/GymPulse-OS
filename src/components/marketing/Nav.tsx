@@ -10,7 +10,7 @@
 import { Container } from "@/components/ui/Container";
 import { LinkButton } from "@/components/ui/LinkButton";
 import { LanguageToggle } from "@/components/LanguageToggle";
-
+import Link from "next/link";
 
 export function Nav() {
   return (
@@ -40,6 +40,12 @@ export function Nav() {
         {/* Actions */}
         <div className="flex items-center gap-3">
           <LanguageToggle />
+<Link
+  href="/login"
+  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+>
+  Login
+</Link>
           <LinkButton href="#early-access" variant="primary" className="hidden sm:inline-flex">
             Request Access
           </LinkButton>

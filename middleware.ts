@@ -1,12 +1,18 @@
-import createMiddleware from "next-intl/middleware";
-import { locales } from "./src/i18n/request";
+import { NextResponse, type NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
 
-export default createMiddleware({
-  locales: [...locales],
-  defaultLocale: "en",
-  localePrefix: "always",
-});
+export async function middleware(request: NextRequest) {
+  const { supabaseResponse, user } = await updateSession(request);
+
+  const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/app") && !user) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  return supabaseResponse;
+}
 
 export const config = {
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  matcher: ["/app/:path*"],
 };
