@@ -1,6 +1,5 @@
 import { getTenantContext } from "@/lib/auth/tenant";
 import { ActionsDataTable } from "./table/data-table";
-import { columns } from "./table/columns";
 import { fetchActions } from "./actions.query";
 
 type SP = Record<string, string | string[] | undefined>;
@@ -54,7 +53,6 @@ export default async function ActionsPage({ searchParams }: { searchParams: SP }
   const sort = normalizeSort(getParam(searchParams, "sort", "created_at"));
   const dir = normalizeDir(getParam(searchParams, "dir", "desc")) as "asc" | "desc";
 
-  // ✅ server-side pagination via URL
   const page = normalizeInt(getParam(searchParams, "page", "1"), 1, 1, 999999);
   const pageSize = normalizeInt(getParam(searchParams, "pageSize", "10"), 10, 5, 50);
 
@@ -75,7 +73,6 @@ export default async function ActionsPage({ searchParams }: { searchParams: SP }
   return (
     <ActionsDataTable
       data={rows as any}
-      columns={columns as any}
       pageIndex={page - 1}
       pageSize={pageSize}
       pageCount={pageCount}

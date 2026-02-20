@@ -10,6 +10,7 @@ export async function fetchActions({
   dir,
   page,
   pageSize,
+  includeDeleted = false, // ✅ novo
 }: {
   tenantId: string;
   q: string;
@@ -20,6 +21,7 @@ export async function fetchActions({
   dir: "asc" | "desc";
   page: number;
   pageSize: number;
+  includeDeleted?: boolean; // ✅ novo
 }) {
   const supabase = supabaseServer();
 
@@ -36,12 +38,17 @@ export async function fetchActions({
       due_at,
       created_by,
       created_at,
+      deleted_at,
       member:members(id,name,email)
       `,
       { count: "exact" }
     )
     .eq("tenant_id", tenantId);
 
+  // ✅ default: não trazer deletadas
+  if (!includeDeleted) query = query.is("deleted_at", null);
+
+  // filtros
   if (q) query = query.or(`title.ilike.%${q}%,type.ilike.%${q}%`);
   if (status !== "all") query = query.eq("status", status);
   if (type !== "all") query = query.eq("type", type);
@@ -53,10 +60,12 @@ export async function fetchActions({
     const next7 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7);
 
     if (due === "overdue") query = query.lt("due_at", startOfToday.toISOString());
-    if (due === "today")
+    if (due === "today") {
       query = query.gte("due_at", startOfToday.toISOString()).lt("due_at", endOfToday.toISOString());
-    if (due === "next7")
+    }
+    if (due === "next7") {
       query = query.gte("due_at", startOfToday.toISOString()).lt("due_at", next7.toISOString());
+    }
   }
 
   query = query.order(sort, { ascending: dir === "asc" });

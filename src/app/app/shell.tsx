@@ -15,7 +15,7 @@ function NavLink({ href, label, active }: { href: string; label: string; active:
         "h-11 w-full rounded-xl px-4 text-sm flex items-center transition",
         active
           ? "bg-emerald-500/20 ring-1 ring-emerald-400/30 text-white"
-          : "bg-white/5 ring-1 ring-white/10 text-white/70 hover:bg-white/7",
+          : "bg-white/5 ring-1 ring-white/10 text-white/70 hover:bg-white/10 hover:text-white",
       ].join(" ")}
     >
       {label}
@@ -55,8 +55,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen">
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(16,185,129,0.14),transparent_45%),radial-gradient(circle_at_70%_10%,rgba(168,85,247,0.10),transparent_40%),radial-gradient(circle_at_50%_90%,rgba(59,130,246,0.10),transparent_40%)]" />
 
-      <div className="relative mx-auto flex max-w-6xl gap-8 px-6 py-10">
-        <aside className="w-[260px] shrink-0">
+      {/* ✅ agora usa a tela toda (sem max-w-6xl) */}
+      <div className="relative flex w-full gap-6 px-4 py-6 md:px-6 lg:px-8">
+        <aside className="hidden w-[280px] shrink-0 lg:block">
           <div className="rounded-3xl border border-white/10 bg-zinc-950/60 p-4 shadow-soft backdrop-blur">
             <div className="mb-4 flex items-center gap-2 px-1">
               <div className="h-2 w-2 rounded-full bg-emerald-400" />
@@ -79,7 +80,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <button
                 onClick={logout}
                 disabled={isPending}
-                className="h-11 w-full rounded-xl bg-white/5 ring-1 ring-white/10 text-sm text-white/70 transition hover:bg-white/7 disabled:opacity-60"
+                className="h-11 w-full rounded-xl bg-white/5 ring-1 ring-white/10 text-sm text-white/70 transition hover:bg-white/10 hover:text-white disabled:opacity-60"
               >
                 {isPending ? "Saindo..." : "Sair"}
               </button>
@@ -87,7 +88,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </aside>
 
-        <main className="min-w-0 flex-1">{children}</main>
+        {/* ✅ conteúdo com padding e largura total */}
+        <main className="min-w-0 flex-1">
+          <div className="w-full max-w-none">{children}</div>
+        </main>
       </div>
     </div>
   );
