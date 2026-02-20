@@ -5,23 +5,17 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabase/client";
 
-function Item({
-  href,
-  label,
-  active,
-}: {
-  href: string;
-  label: string;
-  active: boolean;
-}) {
+type NavItem = { href: string; label: string; group?: string };
+
+function NavLink({ href, label, active }: { href: string; label: string; active: boolean }) {
   return (
     <Link
       href={href}
       className={[
-        "block rounded-2xl px-4 py-3 text-sm transition",
+        "h-11 w-full rounded-xl px-4 text-sm flex items-center transition",
         active
-          ? "border border-pulse/25 bg-pulse/10 text-white"
-          : "border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white",
+          ? "bg-emerald-500/20 ring-1 ring-emerald-400/30 text-white"
+          : "bg-white/5 ring-1 ring-white/10 text-white/70 hover:bg-white/7",
       ].join(" ")}
     >
       {label}
@@ -29,21 +23,24 @@ function Item({
   );
 }
 
-export default function AppShell({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function GroupTitle({ children }: { children: React.ReactNode }) {
+  return <div className="px-1 pt-4 pb-2 text-xs font-semibold tracking-wide text-white/45">{children}</div>;
+}
+
+export default function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
 
-  const nav = useMemo(
+  const nav = useMemo<NavItem[]>(
     () => [
-      { href: "/app", label: "Overview" },
-      { href: "/app/members", label: "Members" },
-      { href: "/app/actions", label: "Actions" },
-      { href: "/app/settings", label: "Settings" },
+      { group: "GERAL", href: "/app/dashboard", label: "Visão geral" },
+      { href: "/app/insights", label: "Insights / Score" },
+
+      { group: "OPERAÇÃO", href: "/app/members", label: "Membros" },
+      { href: "/app/actions", label: "Ações" },
+
+      { group: "ADMIN", href: "/app/settings", label: "Configurações" },
     ],
     []
   );
@@ -51,58 +48,46 @@ export default function AppShell({
   async function logout() {
     const supabase = supabaseBrowser();
     await supabase.auth.signOut();
-
-    // Evita refresh em cima de replace no dev (isso pode dar bug no overlay/hmr)
-    startTransition(() => {
-      router.replace("/login");
-    });
+    startTransition(() => router.replace("/login"));
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* background GymPulse */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-pulse/10 blur-3xl" />
-        <div className="absolute -bottom-24 right-[-8rem] h-72 w-72 rounded-full bg-sky-400/10 blur-3xl" />
-        <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(to_right,rgba(255,255,255,0.10)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.10)_1px,transparent_1px)] [background-size:72px_72px]" />
-      </div>
+    <div className="min-h-screen">
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(16,185,129,0.14),transparent_45%),radial-gradient(circle_at_70%_10%,rgba(168,85,247,0.10),transparent_40%),radial-gradient(circle_at_50%_90%,rgba(59,130,246,0.10),transparent_40%)]" />
 
-      <div className="relative mx-auto flex min-h-screen max-w-6xl gap-6 px-4 py-6">
-        <aside className="hidden w-64 shrink-0 md:block">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-            <div className="mb-5 flex items-center gap-2 text-white/90">
-              <span className="h-2 w-2 rounded-full bg-pulse" />
-              <span className="text-sm font-semibold tracking-tight">
-                GymPulse
-              </span>
+      <div className="relative mx-auto flex max-w-6xl gap-8 px-6 py-10">
+        <aside className="w-[260px] shrink-0">
+          <div className="rounded-3xl border border-white/10 bg-zinc-950/60 p-4 shadow-soft backdrop-blur">
+            <div className="mb-4 flex items-center gap-2 px-1">
+              <div className="h-2 w-2 rounded-full bg-emerald-400" />
+              <div className="text-sm font-semibold text-white/90">GymPulse</div>
             </div>
 
-            <nav className="space-y-2">
-              {nav.map((it) => (
-                <Item
-                  key={it.href}
-                  href={it.href}
-                  label={it.label}
-                  active={pathname === it.href}
-                />
-              ))}
-            </nav>
+            <div className="space-y-2">
+              {nav.map((it) => {
+                const active = pathname === it.href || pathname?.startsWith(it.href + "/");
+                return (
+                  <React.Fragment key={it.href}>
+                    {it.group ? <GroupTitle>{it.group}</GroupTitle> : null}
+                    <NavLink href={it.href} label={it.label} active={active} />
+                  </React.Fragment>
+                );
+              })}
+            </div>
 
-            <button
-              onClick={logout}
-              disabled={isPending}
-              className="mt-5 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80 hover:bg-white/10 transition disabled:opacity-60"
-            >
-              {isPending ? "Saindo..." : "Sair"}
-            </button>
+            <div className="mt-4 border-t border-white/10 pt-4">
+              <button
+                onClick={logout}
+                disabled={isPending}
+                className="h-11 w-full rounded-xl bg-white/5 ring-1 ring-white/10 text-sm text-white/70 transition hover:bg-white/7 disabled:opacity-60"
+              >
+                {isPending ? "Saindo..." : "Sair"}
+              </button>
+            </div>
           </div>
         </aside>
 
-        <main className="flex-1">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur md:p-7">
-            {children}
-          </div>
-        </main>
+        <main className="min-w-0 flex-1">{children}</main>
       </div>
     </div>
   );

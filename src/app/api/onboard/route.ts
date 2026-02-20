@@ -1,118 +1,113 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin as supabaseAdminImport } from "@/lib/supabase/admin";
+import { supabaseServer } from "@/lib/supabase/server";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 
 function slugify(input: string) {
   return input
-    .trim()
     .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
-// ✅ aceita tanto export "client" quanto export "function"
-function getAdmin() {
-  const anyAdmin = supabaseAdminImport as any;
-  return typeof anyAdmin === "function" ? anyAdmin() : anyAdmin;
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .slice(0, 50);
 }
 
 export async function POST(req: Request) {
   try {
-    const admin = getAdmin();
+    const supabase = supabaseServer();
+    const { data: authData, error: authErr } = await supabase.auth.getUser();
 
-    // 1) precisa de Bearer token
-    const auth =
-      req.headers.get("authorization") || req.headers.get("Authorization");
-    if (!auth?.startsWith("Bearer ")) {
+    if (authErr || !authData.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const userId = authData.user.id;
+
+    // se já tem tenant, não cria
+    const { data: existingRole, error: roleErr } = await supabase
+      .from("tenant_roles")
+      .select("tenant_id, role")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (roleErr) return NextResponse.json({ error: roleErr.message }, { status: 400 });
+
+    if (existingRole?.tenant_id) {
       return NextResponse.json(
-        { error: "Missing Authorization Bearer token" },
-        { status: 401 }
+        { ok: true, tenantId: existingRole.tenant_id, role: existingRole.role, already: true },
+        { status: 200 }
       );
     }
 
-    const token = auth.slice("Bearer ".length).trim();
-    const { data: userData, error: userErr } = await admin.auth.getUser(token);
+    let body: any = {};
+    try {
+      body = await req.json();
+    } catch {}
 
-    if (userErr || !userData?.user?.id) {
-      return NextResponse.json(
-        { error: userErr?.message || "Unauthorized" },
-        { status: 401 }
-      );
-    }
+    const orgName: string = body?.orgName || "Minha empresa";
+    const tenantName = String(orgName).trim() || "Minha empresa";
+    const tenantSlug = slugify(tenantName);
 
-    const userId = userData.user.id;
+    const admin = supabaseAdmin();
 
-    const body = await req.json().catch(() => ({}));
-    const fullName = String(body?.fullName || "").trim();
-    const company = String(body?.company || "").trim();
+    // Insere tenant (tenta com slug, se falhar tenta sem)
+    let tenantId: string | null = null;
 
-    // 2) garante profile (id = auth.users.id)
-    const { data: prof, error: profUpsertErr } = await admin
-      .from("profiles")
-      .upsert(
-        { id: userId, full_name: fullName || null },
-        { onConflict: "id" }
-      )
-      .select("id, tenant_id")
-      .single();
-
-    if (profUpsertErr) {
-      return NextResponse.json(
-        { error: profUpsertErr.message },
-        { status: 500 }
-      );
-    }
-
-    // já tem tenant -> ok
-    if (prof?.tenant_id) {
-      return NextResponse.json({ ok: true, tenantId: prof.tenant_id });
-    }
-
-    // 3) cria tenant
-    const tenantName = company || "Minha empresa";
-    const baseSlug = slugify(tenantName) || "gympulse";
-    let slug = baseSlug;
-
-    for (let i = 0; i < 6; i++) {
-      const { data: found, error: foundErr } = await admin
-        .from("tenants")
-        .select("id")
-        .eq("slug", slug)
-        .maybeSingle();
-
-      if (foundErr) {
-        return NextResponse.json({ error: foundErr.message }, { status: 500 });
-      }
-      if (!found) break;
-
-      slug = `${baseSlug}-${Math.floor(Math.random() * 9999)}`;
-    }
-
-    const { data: tenant, error: tenantErr } = await admin
+    const insWithSlug = await admin
       .from("tenants")
-      .insert({ name: tenantName, slug })
+      .insert({ name: tenantName, slug: tenantSlug } as any)
       .select("id")
       .single();
 
-    if (tenantErr) {
-      return NextResponse.json({ error: tenantErr.message }, { status: 500 });
+    if (!insWithSlug.error) {
+      tenantId = insWithSlug.data.id;
+    } else {
+      const insNoSlug = await admin
+        .from("tenants")
+        .insert({ name: tenantName } as any)
+        .select("id")
+        .single();
+
+      if (insNoSlug.error) {
+        return NextResponse.json(
+          { error: "Failed to create tenant", details: insNoSlug.error.message },
+          { status: 400 }
+        );
+      }
+      tenantId = insNoSlug.data.id;
     }
 
-    // 4) liga profile ao tenant + role
-    const { error: linkErr } = await admin
-      .from("profiles")
-      .update({ tenant_id: tenant.id, role: "owner" })
-      .eq("id", userId);
+    // Role owner
+    const roleIns = await admin
+      .from("tenant_roles")
+      .insert({ tenant_id: tenantId, user_id: userId, role: "owner" })
+      .select("tenant_id, role")
+      .single();
 
-    if (linkErr) {
-      return NextResponse.json({ error: linkErr.message }, { status: 500 });
+    if (roleIns.error) {
+      return NextResponse.json(
+        { error: "Failed to create tenant role", details: roleIns.error.message },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ ok: true, tenantId: tenant.id });
+    // Settings (se tabela existir; se não existir, ignora)
+    const settingsUpsert = await admin
+      .from("tenant_settings")
+      .upsert({ tenant_id: tenantId, business_name: tenantName } as any);
+
+    // Se tenant_settings não existir, Supabase retorna erro.
+    // Ignoramos silenciosamente pra não travar onboarding.
+    // (Se quiser, dá pra logar no console.)
+    // if (settingsUpsert.error) console.warn(settingsUpsert.error.message);
+
+    return NextResponse.json({ ok: true, tenantId, role: roleIns.data.role }, { status: 200 });
   } catch (e: any) {
+    console.error("[/api/onboard] fatal:", e);
     return NextResponse.json(
-      { error: e?.message || "Unknown error" },
+      { error: "Internal Server Error", details: e?.message || String(e) },
       { status: 500 }
     );
   }

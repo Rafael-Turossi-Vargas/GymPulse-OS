@@ -32,29 +32,36 @@ export default function LoginForm() {
         return;
       }
 
-      const token = data.session?.access_token;
-      if (!token) {
+      // Garante que existe sessão
+      const session = data.session ?? (await supabase.auth.getSession()).data.session;
+      if (!session) {
         setErr("Sessão inválida. Tente novamente.");
         return;
       }
 
-      // ✅ chama onboarding com Bearer
+      // ✅ chama onboarding via cookie session (sem Bearer)
+      // Se o user já tiver tenant_roles, o endpoint só retorna ok.
       const res = await fetch("/api/onboard", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}), // opcional: { orgName: "Minha empresa" }
       });
 
+      const payload = await res.json().catch(() => null);
+
       if (!res.ok) {
-        const j = await res.json().catch(() => null);
         const msg =
-          j?.error || `Falha ao finalizar cadastro (onboard). HTTP ${res.status}`;
+          payload?.error || `Falha ao finalizar cadastro (onboard). HTTP ${res.status}`;
         setErr(msg);
         return;
       }
+
+      // Se seu backend responder needsOnboarding, dá pra redirecionar:
+      // if (payload?.needsOnboarding) {
+      //   router.replace("/onboarding");
+      //   router.refresh();
+      //   return;
+      // }
 
       router.replace(next);
       router.refresh();
